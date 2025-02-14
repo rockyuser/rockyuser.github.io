@@ -71,6 +71,23 @@
             border-radius: 20px;
         }
 
+        /* 播放/暂停按钮样式 */
+        .control-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            color: #fff;
+            background-color: #ff3860;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .control-button:hover {
+            background-color: #ff6b81;
+        }
+
         /* 手机适配 */
         @media (max-width: 600px) {
             h1 {
@@ -78,6 +95,9 @@
             }
             .message {
                 font-size: 1.2em;
+            }
+            .control-button {
+                font-size: 1em;
             }
         }
     </style>
@@ -87,7 +107,15 @@
         <div class="hearts" id="heartsContainer"></div>
         <h1>❤️ 祝小青 & 小明 情人节快乐！ ❤️</h1>
         <p class="message">相遇是春风十里，<br>原来是你；<br>相爱是山长水阔，<br>最后是你！</p>
+        <!-- 添加播放/暂停按钮 -->
+        <button class="control-button" id="playPauseButton">播放音乐</button>
     </div>
+
+    <!-- 背景音乐 -->
+    <audio id="backgroundMusic" loop>
+        <source src="./music.mp3" type="audio/mpeg">
+        您的浏览器不支持 audio 元素。
+    </audio>
 
     <script>
         function createHeart() {
@@ -105,6 +133,28 @@
 
         // 每0.3秒创建一个爱心
         setInterval(createHeart, 300);
+
+        // 获取音频元素和按钮元素
+        const backgroundMusic = document.getElementById('backgroundMusic');
+        const playPauseButton = document.getElementById('playPauseButton');
+
+        // 切换播放/暂停状态并更新按钮文本
+        playPauseButton.addEventListener('click', function () {
+            if (backgroundMusic.paused) {
+                backgroundMusic.play();
+                playPauseButton.textContent = '暂停音乐';
+            } else {
+                backgroundMusic.pause();
+                playPauseButton.textContent = '播放音乐';
+            }
+        });
+
+        // 页面加载时尝试播放音乐（如果失败则等待用户交互）
+        window.addEventListener('load', function() {
+            backgroundMusic.play().catch(function(error) {
+                console.log("自动播放被阻止：", error);
+            });
+        });
     </script>
 </body>
 </html>
